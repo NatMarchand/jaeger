@@ -16,14 +16,14 @@ jobs:
           task: build-binaries-linux
         - name: windows
           task: build-binaries-windows
-        - name: osx
-          task: build-binaries-darwin
-        - name: system/390
-          task: build-binaries-s390x
-        - name: arm
-          task: build-binaries-arm64
-        - name: powerpc
-          task: build-binaries-ppc64le
+#        - name: osx
+#          task: build-binaries-darwin
+#        - name: system/390
+#          task: build-binaries-s390x
+#        - name: arm
+#          task: build-binaries-arm64
+#        - name: powerpc
+#          task: build-binaries-ppc64le
     name: build binaries for ${{ matrix.platform.name }}
     steps:
     - uses: actions/checkout@v2.3.4
@@ -47,8 +47,12 @@ jobs:
     - name: Build binaries
       run: make ${{ matrix.platform.task }}
 
+    - name: Package binaries
+      id: package-binaries
+      run: bash scripts/package-deploy.sh
+
     - name: Publish binaries
       uses: actions/upload-artifact@v2
       with:
         name: Binaries
-        path: .
+        path: deploy/*.tar.gz
