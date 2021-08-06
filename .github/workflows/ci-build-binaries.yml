@@ -46,3 +46,9 @@ jobs:
 
     - name: Build binaries
       run: make ${{ matrix.platform.task }}
+
+    - name: Publish binaries
+      uses: actions/upload-artifact@v2
+      with:
+        name: Binaries
+        path: .
